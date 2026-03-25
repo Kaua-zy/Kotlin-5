@@ -1,0 +1,134 @@
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+fun main() {
+    inicio()
+}
+
+fun inicio() {
+    var saldo = 1000.0
+    val senhaCorreta = "3589"
+
+    val extrato = mutableListOf(
+        "Depósito: +R$ 500.00",
+        "Compra: -R$ 120.00 (Mercado)",
+        "Compra: -R$ 80.00 (Restaurante)",
+        "Depósito: +R$ 700.00"
+    )
+
+    print("Digite seu nome: ")
+    val nome = readLine() ?: "Usuário"
+
+    println("Olá $nome, é um prazer ter você por aqui!")
+
+    while (true) {
+        println("\n--- MENU ---")
+        println("1 - Ver saldo")
+        println("2 - Ver extrato")
+        println("3 - Saque")
+        println("4 - Depósito")
+        println("5 - Transferência")
+        println("6 - Sair")
+        println("Por favor, informe um número entre 1 e 6")
+
+        print("Opção: ")
+        val opcao = readLine()
+
+        when (opcao) {
+
+            "1" -> {
+                if (validarSenha(senhaCorreta)) {
+                    println("Saldo atual: R$ %.2f".format(saldo))
+                }
+            }
+
+            "2" -> {
+                if (validarSenha(senhaCorreta)) {
+                    println("\n--- EXTRATO ---")
+                    extrato.forEach { println(it) }
+                }
+            }
+
+            "3" -> {
+                if (validarSenha(senhaCorreta)) {
+                    print("Digite o valor para saque: ")
+                    val valor = readLine()?.toDoubleOrNull()
+
+                    if (valor == null) {
+                        println("Valor inválido!")
+                    } else if (valor <= 0 || valor > saldo) {
+                        println("Operação não autorizada")
+                    } else {
+                        saldo -= valor
+                        extrato.add("Saque: -R$ %.2f".format(valor))
+                        println("Saque realizado com sucesso!")
+                    }
+                }
+            }
+
+            "4" -> {
+                // depósito NÃO precisa de senha
+                print("Digite o valor para depósito: ")
+                val valor = readLine()?.toDoubleOrNull()
+
+                if (valor == null) {
+                    println("Valor inválido!")
+                } else if (valor <= 0) {
+                    println("Operação não autorizada")
+                } else {
+                    saldo += valor
+                    extrato.add("Depósito: +R$ %.2f".format(valor))
+                    println("Depósito realizado com sucesso!")
+                }
+            }
+
+            "5" -> {
+                if (validarSenha(senhaCorreta)) {
+                    print("Informe o número da conta: ")
+                    val conta = readLine()
+
+                    if (conta == null || !conta.all { it.isDigit() }) {
+                        println("Conta inválida! Digite apenas números.")
+                    } else {
+                        print("Digite o valor da transferência: ")
+                        val valor = readLine()?.toDoubleOrNull()
+
+                        if (valor == null) {
+                            println("Valor inválido!")
+                        } else if (valor <= 0 || valor > saldo) {
+                            println("Operação não autorizada")
+                        } else {
+                            saldo -= valor
+                            extrato.add("Transferência para conta $conta: -R$ %.2f".format(valor))
+                            println("Transferência realizada com sucesso!")
+                        }
+                    }
+                }
+            }
+
+            "6" -> {
+                println("Até mais, $nome!")
+                break
+            }
+
+            else -> {
+                erro()
+            }
+        }
+    }
+}
+
+fun validarSenha(senhaCorreta: String): Boolean {
+    print("Digite sua senha: ")
+    val senha = readLine()
+
+    return if (senha == senhaCorreta) {
+        true
+    } else {
+        println("Senha incorreta!")
+        false
+    }
+}
+
+fun erro() {
+    println("Opção inválida! Por favor, informe um número entre 1 e 6")
+}
