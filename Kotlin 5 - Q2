@@ -1,0 +1,33 @@
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+fun main() {
+    inicio()
+}
+
+fun inicio() {
+    print("Digite seu nome: ")
+    val nome = readLine() ?: "Usuário"
+
+    println("Olá $nome, é um prazer ter você por aqui!")
+
+    println("\nEscolha uma opção:")
+    println("1 - Ver mensagem")
+    println("2 - Sair")
+
+    print("Opção: ")
+    val opcao = readLine()
+
+    when (opcao) {
+        "1" -> {
+            println("Você escolheu ver uma mensagem, $nome!")
+        }
+        "2" -> {
+            println("Encerrando o sistema. Até mais, $nome!")
+        }
+        else -> {
+            println("Opção inválida! Tente novamente.")
+            inicio() // chama de novo se errar
+        }
+    }
+}
+
